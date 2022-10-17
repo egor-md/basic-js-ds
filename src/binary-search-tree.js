@@ -1,5 +1,7 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
+const { Node } = require('../extensions/list-tree.js');
+
 // const { Node } = require('../extensions/list-tree.js');
 
 /**
@@ -8,39 +10,95 @@ const { NotImplementedError } = require('../extensions/index.js');
 */
 class BinarySearchTree {
 
+  constructor(tree = null) {
+    this.tree = tree;
+  }
+
   root() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return this.tree;
   }
 
-  add(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  add(data) {
+    this.tree = addLeaf(this.tree, data);
+
+    function addLeaf(tree, data) {
+      if (!tree) {
+        return new Node(data);
+      }
+
+      if (data < tree.data) {
+        tree.left = addLeaf(tree.left, data)
+      } else {
+        tree.right = addLeaf(tree.right, data)
+      }
+      return tree;
+    }
   }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  has(data) {
+    if (!this.tree) {
+      return false;
+    }
+
+    return hasLeaf(this.tree, data);
+
+    function hasLeaf(node, data) {
+      if (!node) {
+        return false;
+      }
+
+      if (node.data === data) {
+        return true;
+      }
+
+      if (data > node.data) {
+        return hasLeaf(node.right, data);
+      } else {
+        return hasLeaf(node.left, data);
+      }
+    }
   }
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  find(data) {
+    if (!this.tree) {
+      return null;
+    }
+
+    return findLeaf(this.tree, data);
+
+    function findLeaf(node, data) {
+      if (!node) {
+        return null;
+      }
+
+      if (node.data === data) {
+        return node;
+      }
+
+      if (data > node.data) {
+        return findLeaf(node.right, data);
+      } else {
+        return findLeaf(node.left, data);
+      }     
+    }
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data) {}
+
+  min() {    
+    let tree = this.tree;
+    while (tree.left) {
+      tree = tree.left;
+    }
+    return tree.data;
   }
 
-  min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
-
-  max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  max() {    
+    let tree = this.tree;
+    while (tree.right) {
+      tree = tree.right;
+    }
+    return tree.data;
   }
 }
 
